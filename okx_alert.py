@@ -42,13 +42,13 @@ def volume_alarm():
     r = requests.get(OKX_API).json()
     data=r["data"]
     current_vol = float(data[0][7])  
-    print(f"当前 ETH 永续 成交量: {format_volume(current_vol)}")
+    #print(f"当前 ETH 永续 成交量: {format_volume(current_vol)}")
     if current_vol > THRESHOLD:
         msg = f"当前: {format_volume(current_vol)}"
     else:
         vols = [float(item[7]) for item in data[1:6]]
         avg_vol = statistics.mean(vols)
-        print("倒数6到倒数2的平均值:", format_volume(avg_vol))
+        #print("倒数6到倒数2的平均值:", format_volume(avg_vol))
         if current_vol >= avg_vol * 3:
             msg = f" 当前: {format_volume(current_vol)} 均值: {format_volume(avg_vol)}"
     if msg:
