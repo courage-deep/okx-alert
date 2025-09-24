@@ -10,7 +10,7 @@ OKX_API = os.getenv("OKX_API","https://www.okx.com/api/v5/market/candles?instId=
 # Bark 推送 API (替换成你自己的 Key)
 BARK_KEY = os.getenv("BARK_KEY")
 
-RUN_DURATION = int(os.getenv("RUN_DURATION", 60 * 60 * 4))
+RUN_DURATION = int(os.getenv("RUN_DURATION", 60 * 61 * 4))
 
 CHECK_INTERVAL = float(os.getenv("CHECK_INTERVAL", 0.5)) 
 
