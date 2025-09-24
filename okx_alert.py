@@ -35,7 +35,7 @@ def send_bark(msg):
     if not msg and not BARK_KEY :
         return
     url = f"https://api.day.app/{BARK_KEY}/{msg}"
-    print(url)
+    #print(url)
     try:
         requests.get(url, timeout=10)
     except:
@@ -61,6 +61,8 @@ def volume_alarm():
     return msg
 
 def main():
+    os.environ['TZ'] = os.getenv("TZ","Asia/Shanghai")
+    time.tzset() 
     start_time = datetime.datetime.now()
     print("运行开始",start_time)
     while (datetime.datetime.now() - start_time).total_seconds() < RUN_DURATION:
