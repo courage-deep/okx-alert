@@ -38,26 +38,34 @@ def send_bark(msg):
     #print(url)
     try:
         requests.get(url, timeout=10)
-    except:
-        print('send bark error')
+    except Exception as e:
+        print('send bark error',e)
+
+def get_data():
+    try:
+        return requests.get(OKX_API,timeout=10).json()
+    except Exception as e:
+        print('get data error',e)
+        return None
 
 def volume_alarm():
     msg = None
-    r = requests.get(OKX_API).json()
-    data=r["data"]
-    current_vol = float(data[0][7])  
-    #print(f"当前 ETH 永续 成交量: {format_volume(current_vol)}")
-    if current_vol > THRESHOLD:
-        msg = f"当前: {format_volume(current_vol)}"
-    else:
-        vols = [float(item[7]) for item in data[1:AVG_RANGE+1]]
-        avg_vol = statistics.mean(vols)
-        #print("倒数6到倒数2的平均值:", format_volume(avg_vol))
-        if current_vol >= avg_vol * AVG_MULTI:
-            msg = f" 当前: {format_volume(current_vol)} 均值: {format_volume(avg_vol)}"
-    if msg:
-        send_bark(msg)
-        print("已发送告警:", msg)
+    r = get_data()
+    if(r):
+        data=r["data"]
+        current_vol = float(data[0][7])  
+        #print(f"当前 ETH 永续 成交量: {format_volume(current_vol)}")
+        if current_vol > THRESHOLD:
+            msg = f"当前: {format_volume(current_vol)}"
+        else:
+            vols = [float(item[7]) for item in data[1:AVG_RANGE+1]]
+            avg_vol = statistics.mean(vols)
+            #print("倒数6到倒数2的平均值:", format_volume(avg_vol))
+            if current_vol >= avg_vol * AVG_MULTI:
+                msg = f" 当前: {format_volume(current_vol)} 均值: {format_volume(avg_vol)}"
+        if msg:
+            send_bark(msg)
+            print("已发送告警:", msg)
     return msg
 
 def main():
