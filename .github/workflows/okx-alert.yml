@@ -2,7 +2,7 @@ name: OKX 成交量告警
 
 on:
   schedule:
-    - cron: "18 */4 * * *"  # 每小时执行
+    - cron: "18 2/4 * * *"  # 每小时执行
   workflow_dispatch:        # 支持手动触发
 
 jobs:
