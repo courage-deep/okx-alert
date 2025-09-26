@@ -23,6 +23,12 @@ AVG_RANGE = int(os.getenv("AVG_MULTI", 5))
 
 AVG_MULTI = int(os.getenv("AVG_MULTI", 3))
 
+INCREASE_PERCANTAGE_THRESHOLD = float(os.getenv("INCREASE_PERCANTAGE_THRESHOLD", 0.5)) 
+
+DECREASE_PERCANTAGE_THRESHOLD = float(os.getenv("DECREASE_PERCANTAGE_THRESHOLD", 0.5)) 
+
+RANGE_PERCANTAGE_THRESHOLD = float(os.getenv("RANGE_PERCANTAGE_THRESHOLD", 0.8)) 
+
 
 def format_volume(vol):
     if vol >= 1e8:
@@ -48,15 +54,40 @@ def get_data():
         print('get data error',e)
         return None
 
+def get_increase_percantage(data):
+    r=( float(data[2]) - float(data[1]) ) / float(data[1])
+    return r *100
+
+def get_decrease_percantage(data):
+    r=( float(data[3]) - float(data[1]) ) / float(data[1])
+    return r *100 * -1
+
+def get_range_percantage(data):
+    r=( float(data[2]) - float(data[3]) ) / float(data[1])
+    return r *100
+    
 def volume_alarm():
     msg = None
     r = get_data()
     if(r):
         data=r["data"]
-        current_vol = float(data[0][7])  
+        current_data=data[0]
+        current_vol = float(current_data[7])  
+        current_range_percantage=get_range_percantage(current_data)
+        current_increase_percantage=get_increase_percantage(current_data)
+        current_decrease_percantage=get_decrease_percantage(current_data)
+        # print(current_range_percantage)
+        # print(current_increase_percantage)
+        # print(current_decrease_percantage)
         #print(f"当前 ETH 永续 成交量: {format_volume(current_vol)}")
-        if current_vol > THRESHOLD:
+        if current_vol >= THRESHOLD:
             msg = f"当前: {format_volume(current_vol)}"
+        elif current_range_percantage >= RANGE_PERCANTAGE_THRESHOLD :
+            msg = f"变化: {current_range_percantage:.2f}"
+        elif current_increase_percantage >=INCREASE_PERCANTAGE_THRESHOLD:
+            msg = f"in: {current_increase_percantage:.2f}"   
+        elif current_decrease_percantage >= DECREASE_PERCANTAGE_THRESHOLD:
+            msg = f"de: {current_decrease_percantage:.2f}" 
         else:
             vols = [float(item[7]) for item in data[1:AVG_RANGE+1]]
             avg_vol = statistics.mean(vols)
