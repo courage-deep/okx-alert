@@ -27,3 +27,13 @@ jobs:
         run: python -u okx_alert.py
         env:
           BARK_KEY: ${{ secrets.BARK_KEY }}
+          OKX_API: ${{ vars.OKX_API }}
+          RUN_DURATION: ${{ vars.RUN_DURATION }}
+          CHECK_INTERVAL: ${{ vars.CHECK_INTERVAL }}
+          CHECK_WAIT: ${{ vars.CHECK_WAIT }}
+          THRESHOLD: ${{ vars.THRESHOLD }}
+          AVG_RANGE: ${{ vars.AVG_RANGE }}
+          AVG_MULTI: ${{ vars.AVG_MULTI }}
+          INCREASE_PERCANTAGE_THRESHOLD: ${{ vars.INCREASE_PERCANTAGE_THRESHOLD }}
+          DECREASE_PERCANTAGE_THRESHOLD: ${{ vars.DECREASE_PERCANTAGE_THRESHOLD }}
+          RANGE_PERCANTAGE_THRESHOLD: ${{ vars.RANGE_PERCANTAGE_THRESHOLD }}
