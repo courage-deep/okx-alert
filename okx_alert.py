@@ -5,29 +5,25 @@ import time
 import requests
 
 # OKX ETH 永续合约行情 API
-OKX_API = os.getenv("OKX_API","https://www.okx.com/api/v5/market/candles?instId=ETH-USDT-SWAP&bar=5m")
+OKX_API = os.getenv("OKX_API") or "https://www.okx.com/api/v5/market/candles?instId=ETH-USDT-SWAP&bar=5m"
 
 # Bark 推送 API (替换成你自己的 Key)
-BARK_KEY = os.getenv("BARK_KEY")
+BARK_KEY = os.getenv("BARK_KEY") or None
 
-RUN_DURATION = int(os.getenv("RUN_DURATION", 60 * 61 * 4))
-
-CHECK_INTERVAL = float(os.getenv("CHECK_INTERVAL", 0.5)) 
-
-CHECK_WAIT = int(os.getenv("CHECK_WAIT", 60 * 15))
+# 运行配置
+RUN_DURATION = int(os.getenv("RUN_DURATION") or 60 * 61 * 4)
+CHECK_INTERVAL = float(os.getenv("CHECK_INTERVAL") or 0.5)
+CHECK_WAIT = int(os.getenv("CHECK_WAIT") or 60 * 15)
 
 # 阈值
-THRESHOLD = int(os.getenv("THRESHOLD", 1e8))
+THRESHOLD = int(os.getenv("THRESHOLD") or 1e8)
+AVG_RANGE = int(os.getenv("AVG_RANGE") or 5)   # 这里应该用 AVG_RANGE，不是 AVG_MULTI
+AVG_MULTI = int(os.getenv("AVG_MULTI") or 3)
 
-AVG_RANGE = int(os.getenv("AVG_MULTI", 5))
-
-AVG_MULTI = int(os.getenv("AVG_MULTI", 3))
-
-INCREASE_PERCANTAGE_THRESHOLD = float(os.getenv("INCREASE_PERCANTAGE_THRESHOLD", 0.5)) 
-
-DECREASE_PERCANTAGE_THRESHOLD = float(os.getenv("DECREASE_PERCANTAGE_THRESHOLD", 0.5)) 
-
-RANGE_PERCANTAGE_THRESHOLD = float(os.getenv("RANGE_PERCANTAGE_THRESHOLD", 0.8)) 
+# 波动比例阈值
+INCREASE_PERCANTAGE_THRESHOLD = float(os.getenv("INCREASE_PERCANTAGE_THRESHOLD") or 0.5)
+DECREASE_PERCANTAGE_THRESHOLD = float(os.getenv("DECREASE_PERCANTAGE_THRESHOLD") or 0.5)
+RANGE_PERCANTAGE_THRESHOLD = float(os.getenv("RANGE_PERCANTAGE_THRESHOLD") or 0.8)
 
 
 def format_volume(vol):
