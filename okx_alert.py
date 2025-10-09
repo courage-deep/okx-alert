@@ -92,7 +92,7 @@ def volume_alarm():
                 msg = f" 当前: {format_volume(current_vol)} 均值: {format_volume(avg_vol)}"
         if msg:
             send_bark(msg)
-            print("已发送告警:", msg)
+            print("已发送告警:", msg,"当前时间:",datetime.datetime.now())
     return msg
 
 def main():
