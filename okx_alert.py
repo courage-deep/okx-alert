@@ -14,6 +14,7 @@ BARK_KEY = os.getenv("BARK_KEY") or None
 RUN_DURATION = int(os.getenv("RUN_DURATION") or 60 * 61 * 4)
 CHECK_INTERVAL = float(os.getenv("CHECK_INTERVAL") or 0.5)
 CHECK_WAIT = int(os.getenv("CHECK_WAIT") or 60 * 15)
+CHECK_WAIT_INTERVAL = int(os.getenv("CHECK_WAIT_INTERVAL") or 1)
 
 # 阈值
 THRESHOLD = int(os.getenv("THRESHOLD") or 1e8)
@@ -95,6 +96,13 @@ def volume_alarm():
             print("已发送告警:", msg,"当前时间:",datetime.datetime.now())
     return msg
 
+def get_wait_time():
+    now = datetime.datetime.now()
+    next_minute = (now.minute // 5 + 1+CHECK_WAIT_INTERVAL) * 5
+    next_time = now.replace(hour=now.hour+next_minute//60, minute=next_minute%60, second=0, microsecond=0)
+    return (next_time - now).total_seconds() + 1    
+
+
 def main():
     os.environ['TZ'] = os.getenv("TZ","Asia/Shanghai")
     time.tzset() 
@@ -102,7 +110,7 @@ def main():
     print("运行开始",start_time)
     while (datetime.datetime.now() - start_time).total_seconds() < RUN_DURATION:
         if(volume_alarm()):
-            time.sleep(CHECK_WAIT)
+            time.sleep(get_wait_time())
         else:
             time.sleep(CHECK_INTERVAL)
     print("运行结束",datetime.datetime.now())

@@ -31,6 +31,7 @@ jobs:
           RUN_DURATION: ${{ vars.RUN_DURATION }}
           CHECK_INTERVAL: ${{ vars.CHECK_INTERVAL }}
           CHECK_WAIT: ${{ vars.CHECK_WAIT }}
+          CHECK_WAIT_INTERVAL: ${{ vars.CHECK_WAIT_INTERVAL }}
           THRESHOLD: ${{ vars.THRESHOLD }}
           AVG_RANGE: ${{ vars.AVG_RANGE }}
           AVG_MULTI: ${{ vars.AVG_MULTI }}
