@@ -98,10 +98,9 @@ def volume_alarm():
 
 def get_wait_time():
     now = datetime.datetime.now()
-    next_minute = (now.minute // 5 + 1+CHECK_WAIT_INTERVAL) * 5
-    next_time = now.replace(hour=now.hour+next_minute//60, minute=next_minute%60, second=0, microsecond=0)
-    return (next_time - now).total_seconds() + 1    
-
+    next_time=now + datetime.timedelta(minutes= 5*(1+CHECK_WAIT_INTERVAL))
+    next_time = next_time.replace( minute=(next_time.minute//5)*5, second=0, microsecond=0)
+    return (next_time - now).total_seconds() + 1  
 
 def main():
     os.environ['TZ'] = os.getenv("TZ","Asia/Shanghai")
