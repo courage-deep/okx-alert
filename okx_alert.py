@@ -100,7 +100,7 @@ def get_wait_time():
     now = datetime.datetime.now()
     next_time=now + datetime.timedelta(minutes= 5*(1+CHECK_WAIT_INTERVAL))
     next_time = next_time.replace( minute=(next_time.minute//5)*5, second=0, microsecond=0)
-    return (next_time - now).total_seconds() + 1  
+    return (next_time - now).total_seconds() + 10
 
 def main():
     os.environ['TZ'] = os.getenv("TZ","Asia/Shanghai")
